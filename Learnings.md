@@ -32,3 +32,34 @@ export default connect(mapStateToProps)(App);
 
 
 ```
+
+### Making your own Higer Order Components
+
+The way we use our HOC we created below, is by importing the HOC and the component you want to wrap. Everytime our HOC is called we create a new copy of the class and it's sole purpose is to render the component that we've passed to our function.
+
+The purpose of `this.props` is to satisfy if we try to show or render our wrapped component and we pass in any additional props that it shows up in our rendered component. The composed component is an instance of the Authentication component and in order to pass in the props, we spread them inside of our `ComposedComponent` Tag.
+
+```js
+
+import React, { Component } from 'react';
+
+export default function(ComposedComponent) {
+  class Authentication extends Component {
+    render() {
+      return <ComposedComponent {...this.props} />;
+    }
+  }
+
+  return Authentication;
+}
+
+//Example of usage
+
+import Authentication; // HOC
+import Resources; /// The component you want to wrap
+
+const ComposedComponent = Authentication(Resources);
+```
+
+### React Router - context
+Context is something like props, but allows us to skip levels in our component hierarchy. React forcibly prevents you from abusing this idea of context by forcing you to define `contextTypes` properties. If we want access to our router within our component, we need to say ahead of time using the `static` keyword with contextTypes. The static keyword is defining a property/object on the actual class, _not the instance of the class_. By defining our contextTypes, we now have access to our router.
